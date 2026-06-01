@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.prisma/
+prisma/**/*.generated
+*.db
+.pnpm-store
+.turbo/
+*.tsbuildinfo
+pid.txt
+stderr.txt
+stdout.txt

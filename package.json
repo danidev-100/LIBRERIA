@@ -1,0 +1,25 @@
+{
+  "name": "libreria",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm -r run dev",
+    "build": "pnpm -r run build",
+    "lint": "pnpm -r run lint",
+    "type-check": "pnpm -r run type-check"
+  },
+  "devDependencies": {
+    "typescript": "6.0.3",
+    "concurrently": "^9.1.2",
+    "eslint": "^9.20.0",
+    "@prisma/client": "7.8.0",
+    "dotenv": "^16.4.7"
+  },
+  "engines": {
+    "node": ">=22",
+    "pnpm": ">=10"
+  },
+  "packageManager": "pnpm@10.8.0",
+  "pnpm": {
+    "onlyBuiltDependencies": ["@prisma/engines", "esbuild", "prisma"]
+  }
+}
