@@ -2,6 +2,10 @@ import express, { type Express } from "express";
 import cors from "cors";
 import { env } from "./config/env.js";
 import healthRouter from "./routes/health.js";
+import authRouter from "./routes/auth.js";
+import productRouter from "./routes/products.js";
+import orderRouter from "./routes/orders.js";
+import adminRouter from "./routes/admin.js";
 import { globalErrorHandler } from "./middleware/error.js";
 
 const app: Express = express();
@@ -15,6 +19,10 @@ app.use(express.json());
 
 // Routes
 app.use(healthRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
+app.use("/api/orders", orderRouter);
+app.use("/api/admin", adminRouter);
 
 // 404 catch-all for unmatched routes
 app.use((_req, res) => {

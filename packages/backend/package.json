@@ -6,21 +6,30 @@
     "build": "tsc",
     "start": "node dist/index.js",
     "type-check": "tsc --noEmit",
-    "lint": "echo 'lint: not configured yet'"
+    "lint": "echo 'lint: not configured yet'",
+    "seed:admin": "tsx scripts/seed-admin.ts"
   },
   "dependencies": {
-    "express": "5.2.1",
     "@prisma/adapter-pg": "7.8.0",
     "@prisma/client": "7.8.0",
-    "zod": "4.4.3",
+    "bcryptjs": "^3.0.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.7"
+    "dotenv": "^16.4.7",
+    "express": "5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^1.4.5-lts.1",
+    "pdfkit": "^0.16.0",
+    "zod": "4.4.3"
   },
   "devDependencies": {
-    "prisma": "7.8.0",
-    "tsx": "4.22.4",
-    "@types/express": "5.0.6",
+    "@types/bcryptjs": "^3.0.0",
     "@types/cors": "^2.8.17",
-    "@types/node": "^22.14.1"
+    "@types/multer": "^1.4.12",
+    "@types/express": "5.0.6",
+    "@types/jsonwebtoken": "^9.0.9",
+    "@types/node": "^22.14.1",
+    "@types/pdfkit": "^0.17.6",
+    "prisma": "7.8.0",
+    "tsx": "4.22.4"
   }
 }
