@@ -1,6 +1,7 @@
 {
   "name": "libreria",
   "private": true,
+  "type": "module",
   "scripts": {
     "dev": "pnpm -r run dev",
     "build": "pnpm -r run build",
