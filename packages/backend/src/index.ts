@@ -10,9 +10,11 @@ import { globalErrorHandler } from "./middleware/error.js";
 
 const app: Express = express();
 
+const isVercel = !!process.env.VERCEL;
+
 app.use(
   cors({
-    origin: env.FRONTEND_URL,
+    origin: isVercel ? true : env.FRONTEND_URL,
   }),
 );
 app.use(express.json());
@@ -35,8 +37,10 @@ app.use((_req, res) => {
 // Global error handler (must be last)
 app.use(globalErrorHandler);
 
-app.listen(env.PORT, () => {
-  console.log(`🚀 Backend running on http://localhost:${env.PORT}`);
-});
+if (!isVercel) {
+  app.listen(env.PORT, () => {
+    console.log(`🚀 Backend running on http://localhost:${env.PORT}`);
+  });
+}
 
 export default app;

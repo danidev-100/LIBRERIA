@@ -12,3 +12,4 @@ stderr.txt
 stdout.txt
 *.log
 test-output.pdf
+.vercel
