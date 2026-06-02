@@ -11,6 +11,10 @@ context: |
   Testing: No test runner installed yet
   Style: Standard JS/TS conventions, to be established
 
+archive:
+  - "2026-06-01-scaffold-y-modelo-datos"
+  - "2026-06-01-auth-orders-pdf"
+
 rules:
   proposal:
     - Include rollback plan for risky changes
