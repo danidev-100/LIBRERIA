@@ -48,6 +48,7 @@ function mapOrderWithItems(order: {
     productCode: string;
     quantity: number;
     unitPrice: { toNumber?: () => number };
+    details: string | null;
     product: { code: string; description: string; price: { toNumber?: () => number }; isActive: boolean; lastUpdate: Date | null; createdAt: Date; updatedAt: Date };
   }>;
 }) {
@@ -57,6 +58,7 @@ function mapOrderWithItems(order: {
     items: order.items.map((item) => ({
       ...item,
       unitPrice: Number(item.unitPrice),
+      details: item.details,
       product: { ...item.product, price: Number(item.product.price) },
     })),
   };

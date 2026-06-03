@@ -58,6 +58,7 @@ model OrderItem {
   product      Product @relation(fields: [productCode], references: [code])
   quantity     Int
   unitPrice    Decimal @db.Decimal(12, 2)
+  details      String?
 
   @@index([productCode])
 }

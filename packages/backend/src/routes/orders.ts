@@ -13,6 +13,7 @@ const router = Router();
 const itemSchema = z.object({
   productCode: z.string().min(1, "productCode is required"),
   quantity: z.number().int().positive("quantity must be a positive integer"),
+  details: z.string().max(500).optional(),
 });
 
 const createOrderSchema = z.object({
@@ -62,6 +63,7 @@ router.post(
           productCode: item.productCode,
           quantity: item.quantity,
           unitPrice: product.price,
+          details: item.details ?? null,
         };
       });
 
@@ -187,9 +189,12 @@ router.get(
 
     const pdfBuffer = await generateOrderInvoice(order);
 
+    const disposition =
+      req.query.inline === "true" ? "inline" : "attachment";
+
     res.set({
       "Content-Type": "application/pdf",
-      "Content-Disposition": `attachment; filename="order-${order.id}.pdf"`,
+      "Content-Disposition": `${disposition}; filename="order-${order.id}.pdf"`,
     });
     res.send(pdfBuffer);
   }),
@@ -209,6 +214,7 @@ function mapOrderWithItems(order: {
     productCode: string;
     quantity: number;
     unitPrice: { toNumber?: () => number };
+    details: string | null;
     product: { code: string; description: string; price: { toNumber?: () => number } };
   }>;
 }) {
@@ -218,6 +224,7 @@ function mapOrderWithItems(order: {
     items: order.items.map((item) => ({
       ...item,
       unitPrice: Number(item.unitPrice),
+      details: item.details,
       product: { ...item.product, price: Number(item.product.price) },
     })),
   };

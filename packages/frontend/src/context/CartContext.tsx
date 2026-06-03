@@ -12,6 +12,7 @@ import type { Product } from "../types/index.js";
 export interface CartItem {
   product: Product;
   quantity: number;
+  details: string;
 }
 
 interface CartContextType {
@@ -19,6 +20,7 @@ interface CartContextType {
   addItem: (product: Product, quantity?: number) => void;
   removeItem: (productCode: string) => void;
   updateQuantity: (productCode: string, quantity: number) => void;
+  updateDetails: (productCode: string, details: string) => void;
   clearCart: () => void;
   totalItems: number;
   totalPrice: number;
@@ -64,7 +66,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
             : i,
         );
       }
-      return [...prev, { product, quantity }];
+      return [...prev, { product, quantity, details: "" }];
     });
   }, []);
 
@@ -81,6 +83,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
       setItems((prev) =>
         prev.map((i) =>
           i.product.code === productCode ? { ...i, quantity } : i,
+        ),
+      );
+    },
+    [],
+  );
+
+  const updateDetails = useCallback(
+    (productCode: string, details: string) => {
+      setItems((prev) =>
+        prev.map((i) =>
+          i.product.code === productCode ? { ...i, details } : i,
         ),
       );
     },
@@ -106,6 +119,7 @@ export function CartProvider({ children }: { children: ReactNode }) {
     addItem,
     removeItem,
     updateQuantity,
+    updateDetails,
     clearCart,
     totalItems,
     totalPrice,

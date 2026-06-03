@@ -14,7 +14,7 @@ function formatPrice(price: number): string {
 }
 
 export default function CartPage() {
-  const { items, updateQuantity, removeItem, clearCart, totalPrice, totalItems } = useCart();
+  const { items, updateQuantity, updateDetails, removeItem, clearCart, totalPrice, totalItems } = useCart();
   const navigate = useNavigate();
 
   const mutation = useMutation({
@@ -25,6 +25,7 @@ export default function CartPage() {
     const orderItems: CreateOrderItem[] = items.map((i) => ({
       productCode: i.product.code,
       quantity: i.quantity,
+      details: i.details || undefined,
     }));
 
     mutation.mutate(orderItems, {
@@ -60,6 +61,7 @@ export default function CartPage() {
             <tr className="border-b border-gray-200 text-left text-sm font-medium text-gray-500">
               <th className="pb-3">Código</th>
               <th className="pb-3">Descripción</th>
+              <th className="pb-3">Detalles</th>
               <th className="pb-3">Cantidad</th>
               <th className="pb-3">Precio Unit.</th>
               <th className="pb-3">Subtotal</th>
@@ -71,6 +73,16 @@ export default function CartPage() {
               <tr key={item.product.code} className="border-b border-gray-100">
                 <td className="py-4 text-sm text-gray-700">{item.product.code}</td>
                 <td className="py-4 text-sm text-gray-900">{item.product.description}</td>
+                <td className="py-4">
+                  <input
+                    type="text"
+                    value={item.details ?? ""}
+                    onChange={(e) => updateDetails(item.product.code, e.target.value)}
+                    placeholder="Ej: para regalo, urgente..."
+                    maxLength={500}
+                    className="w-full rounded border border-gray-300 px-2 py-1 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
+                  />
+                </td>
                 <td className="py-4">
                   <div className="flex items-center gap-1">
                     <button

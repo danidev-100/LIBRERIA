@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { adminGetOrders, adminUpdateStatus } from "../api/orders.js";
+import { adminGetOrders, adminUpdateStatus, getOrderPdfUrl } from "../api/orders.js";
 import type { OrderStatus } from "../types/index.js";
 import { ApiClientError } from "../api/client.js";
 
@@ -56,6 +56,57 @@ function formatDate(dateStr: string): string {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function handleViewPdf(orderId: number) {
+  const token = localStorage.getItem("token");
+  const pdfUrl = getOrderPdfUrl(orderId, true);
+
+  fetch(pdfUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Error al cargar PDF");
+      return res.blob();
+    })
+    .then((blob) => {
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    })
+    .catch((err) => {
+      alert(err instanceof Error ? err.message : "Error al cargar PDF");
+    });
+}
+
+function handleDownloadPdf(orderId: number) {
+  const token = localStorage.getItem("token");
+  const pdfUrl = getOrderPdfUrl(orderId);
+
+  fetch(pdfUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Error al descargar PDF");
+      return res.blob();
+    })
+    .then((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `orden-${orderId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    })
+    .catch((err) => {
+      alert(err instanceof Error ? err.message : "Error al descargar PDF");
+    });
 }
 
 export default function AdminDashboardPage() {
@@ -194,32 +245,50 @@ export default function AdminDashboardPage() {
                       </span>
                     </td>
                     <td className="px-4 py-3">
-                      {transitions[order.status].length > 0 ? (
-                        <select
-                          value=""
-                          onChange={(e) => {
-                            if (e.target.value) {
-                              handleStatusChange(
-                                order.id,
-                                e.target.value as OrderStatus,
-                              );
-                            }
-                          }}
-                          disabled={statusMutation.isPending}
-                          className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 focus:border-blue-500 focus:outline-none"
+                      <div className="flex items-center gap-2">
+                        <button
+                          type="button"
+                          onClick={() => handleViewPdf(order.id)}
+                          title="Ver PDF"
+                          className="rounded border border-gray-300 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 transition-colors"
                         >
-                          <option value="" disabled>
-                            Cambiar a...
-                          </option>
-                          {transitions[order.status].map((nextStatus) => (
-                            <option key={nextStatus} value={nextStatus}>
-                              {statusLabels[nextStatus]}
+                          Ver
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDownloadPdf(order.id)}
+                          title="Descargar PDF"
+                          className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors"
+                        >
+                          PDF
+                        </button>
+                        {transitions[order.status].length > 0 ? (
+                          <select
+                            value=""
+                            onChange={(e) => {
+                              if (e.target.value) {
+                                handleStatusChange(
+                                  order.id,
+                                  e.target.value as OrderStatus,
+                                );
+                              }
+                            }}
+                            disabled={statusMutation.isPending}
+                            className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 focus:border-blue-500 focus:outline-none"
+                          >
+                            <option value="" disabled>
+                              Cambiar a...
                             </option>
-                          ))}
-                        </select>
-                      ) : (
-                        <span className="text-xs text-gray-400">—</span>
-                      )}
+                            {transitions[order.status].map((nextStatus) => (
+                              <option key={nextStatus} value={nextStatus}>
+                                {statusLabels[nextStatus]}
+                              </option>
+                            ))}
+                          </select>
+                        ) : (
+                          <span className="text-xs text-gray-400">—</span>
+                        )}
+                      </div>
                     </td>
                   </tr>
                 ))}

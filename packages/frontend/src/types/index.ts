@@ -22,6 +22,7 @@ export interface OrderItem {
   productCode: string;
   quantity: number;
   unitPrice: number;
+  details?: string | null;
   product: Product;
 }
 

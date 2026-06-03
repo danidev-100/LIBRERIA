@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { getOrders } from "../api/orders.js";
+import { getOrders, getOrderPdfUrl } from "../api/orders.js";
 import type { OrderStatus } from "../types/index.js";
 
 const statusColors: Record<OrderStatus, string> = {
@@ -36,6 +36,57 @@ function formatDate(dateStr: string): string {
     hour: "2-digit",
     minute: "2-digit",
   });
+}
+
+function handleViewPdf(orderId: number) {
+  const token = localStorage.getItem("token");
+  const pdfUrl = getOrderPdfUrl(orderId, true);
+
+  fetch(pdfUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Error al cargar PDF");
+      return res.blob();
+    })
+    .then((blob) => {
+      const url = URL.createObjectURL(blob);
+      window.open(url, "_blank");
+      setTimeout(() => URL.revokeObjectURL(url), 1000);
+    })
+    .catch((err) => {
+      alert(err instanceof Error ? err.message : "Error al cargar PDF");
+    });
+}
+
+function handleDownloadPdf(orderId: number) {
+  const token = localStorage.getItem("token");
+  const pdfUrl = getOrderPdfUrl(orderId);
+
+  fetch(pdfUrl, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((res) => {
+      if (!res.ok) throw new Error("Error al descargar PDF");
+      return res.blob();
+    })
+    .then((blob) => {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = `orden-${orderId}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    })
+    .catch((err) => {
+      alert(err instanceof Error ? err.message : "Error al descargar PDF");
+    });
 }
 
 function OrdersTableSkeleton() {
@@ -110,6 +161,7 @@ export default function MyOrdersPage() {
               <th className="pb-3">Fecha</th>
               <th className="pb-3">Estado</th>
               <th className="pb-3 text-right">Total</th>
+              <th className="pb-3 text-right">Acción</th>
             </tr>
           </thead>
           <tbody>
@@ -136,6 +188,32 @@ export default function MyOrdersPage() {
                 </td>
                 <td className="py-4 text-sm text-gray-900 font-medium text-right">
                   {formatPrice(order.total)}
+                </td>
+                <td className="py-4 text-right">
+                  <div className="flex items-center justify-end gap-2">
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleViewPdf(order.id);
+                      }}
+                      title="Ver PDF"
+                      className="rounded border border-gray-300 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 transition-colors"
+                    >
+                      Ver
+                    </button>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDownloadPdf(order.id);
+                      }}
+                      title="Descargar PDF"
+                      className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors"
+                    >
+                      PDF
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}

@@ -10,6 +10,7 @@ export interface InvoiceOrderData {
     productCode: string;
     quantity: number;
     unitPrice: number | { toNumber(): number };
+    details?: string | null;
     product: { code: string; description: string; price: number | { toNumber(): number } };
   }>;
 }
@@ -52,13 +53,14 @@ export function generateOrderInvoice(order: InvoiceOrderData): Promise<Buffer> {
     drawLine(doc, 185);
 
     // --- Items Table ---
-    const colX = { code: 50, desc: 110, qty: 380, price: 430, subtotal: 490 };
-    const colW = { desc: 260, qty: 40, price: 55, subtotal: 55 };
+    const colX = { code: 50, desc: 100, details: 230, qty: 365, price: 410, subtotal: 475 };
+    const colW = { desc: 120, details: 130, qty: 35, price: 50, subtotal: 55 };
 
     const tableHeaderY = 200;
-    doc.fontSize(10).font("Helvetica-Bold");
+    doc.fontSize(9).font("Helvetica-Bold");
     doc.text("Código", colX.code, tableHeaderY);
     doc.text("Descripción", colX.desc, tableHeaderY, { width: colW.desc });
+    doc.text("Detalles", colX.details, tableHeaderY, { width: colW.details });
     doc.text("Cant.", colX.qty, tableHeaderY, { width: colW.qty, align: "center" });
     doc.text("P.Unit", colX.price, tableHeaderY, { width: colW.price, align: "right" });
     doc.text("Subtotal", colX.subtotal, tableHeaderY, { width: colW.subtotal, align: "right" });
@@ -67,29 +69,31 @@ export function generateOrderInvoice(order: InvoiceOrderData): Promise<Buffer> {
 
     // --- Rows ---
     let y = 225;
-    doc.font("Helvetica").fontSize(10);
+    doc.font("Helvetica").fontSize(9);
 
     for (const item of order.items) {
       const up = toNum(item.unitPrice);
       const subtotal = up * item.quantity;
+      const hasDetails = item.details && item.details.trim().length > 0;
 
-      if (y > 720) {
+      if (y > 710) {
         doc.addPage();
         y = 50;
       }
 
       doc.text(item.productCode, colX.code, y);
       doc.text(item.product.description, colX.desc, y, { width: colW.desc });
+      doc.text(item.details || "", colX.details, y, { width: colW.details });
       doc.text(String(item.quantity), colX.qty, y, { width: colW.qty, align: "center" });
       doc.text(`$${up.toFixed(2)}`, colX.price, y, { width: colW.price, align: "right" });
       doc.text(`$${subtotal.toFixed(2)}`, colX.subtotal, y, { width: colW.subtotal, align: "right" });
 
-      y += 20;
+      y += hasDetails ? 28 : 20;
     }
 
     // --- Total ---
     y += 10;
-    doc.moveTo(350, y).lineTo(545, y).stroke();
+    doc.moveTo(350, y).lineTo(530, y).stroke();
     y += 12;
 
     const totalNum = toNum(order.total);
