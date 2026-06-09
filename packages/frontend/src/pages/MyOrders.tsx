@@ -93,7 +93,7 @@ function OrdersTableSkeleton() {
   return (
     <div className="animate-pulse space-y-3">
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="h-12 rounded-lg bg-gray-100" />
+        <div key={i} className="h-12 rounded-lg bg-gray-100 dark:bg-gray-800" />
       ))}
     </div>
   );
@@ -111,7 +111,7 @@ export default function MyOrdersPage() {
   if (isLoading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Mis Pedidos</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Mis Pedidos</h1>
         <OrdersTableSkeleton />
       </div>
     );
@@ -138,7 +138,7 @@ export default function MyOrdersPage() {
     return (
       <div className="text-center py-16">
         <h1 className="text-2xl font-bold text-gray-900 mb-4">Mis Pedidos</h1>
-        <p className="text-gray-500 text-lg">No tenés pedidos aún</p>
+        <p className="text-gray-500 dark:text-gray-400 text-lg">No tenés pedidos aún</p>
         <Link
           to="/catalog"
           className="mt-6 inline-block rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
@@ -156,7 +156,7 @@ export default function MyOrdersPage() {
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-gray-200 text-left text-sm font-medium text-gray-500">
+            <tr className="border-b border-gray-200 dark:border-gray-700 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
               <th className="pb-3">Pedido #</th>
               <th className="pb-3">Fecha</th>
               <th className="pb-3">Estado</th>
@@ -169,12 +169,12 @@ export default function MyOrdersPage() {
               <tr
                 key={order.id}
                 onClick={() => navigate(`/orders/${order.id}`)}
-                className="border-b border-gray-100 cursor-pointer hover:bg-gray-50 transition-colors"
+                className="border-b border-gray-100 dark:border-gray-800 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-800/50 transition-colors"
               >
-                <td className="py-4 text-sm font-medium text-gray-900">
+                <td className="py-4 text-sm font-medium text-gray-900 dark:text-gray-100">
                   #{order.id}
                 </td>
-                <td className="py-4 text-sm text-gray-600">
+                <td className="py-4 text-sm text-gray-600 dark:text-gray-400">
                   {formatDate(order.createdAt)}
                 </td>
                 <td className="py-4">
@@ -186,7 +186,7 @@ export default function MyOrdersPage() {
                     {statusLabels[order.status]}
                   </span>
                 </td>
-                <td className="py-4 text-sm text-gray-900 font-medium text-right">
+                <td className="py-4 text-sm text-gray-900 dark:text-gray-100 font-medium text-right">
                   {formatPrice(order.total)}
                 </td>
                 <td className="py-4 text-right">
@@ -198,7 +198,7 @@ export default function MyOrdersPage() {
                         handleViewPdf(order.id);
                       }}
                       title="Ver PDF"
-                      className="rounded border border-gray-300 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 transition-colors"
+                      className="rounded border border-gray-300 dark:border-gray-600 px-2 py-1 text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
                     >
                       Ver
                     </button>
@@ -209,7 +209,7 @@ export default function MyOrdersPage() {
                         handleDownloadPdf(order.id);
                       }}
                       title="Descargar PDF"
-                      className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors"
+                      className="rounded border border-gray-300 dark:border-gray-600 px-2 py-1 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                     >
                       PDF
                     </button>
@@ -227,18 +227,18 @@ export default function MyOrdersPage() {
           type="button"
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page <= 1}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Anterior
         </button>
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-gray-600 dark:text-gray-400">
           Página {data.page} de {data.totalPages}
         </span>
         <button
           type="button"
           onClick={() => setPage((p) => p + 1)}
           disabled={page >= data.totalPages}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Siguiente
         </button>

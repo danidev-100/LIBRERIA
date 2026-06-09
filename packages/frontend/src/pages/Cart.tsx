@@ -39,8 +39,8 @@ export default function CartPage() {
   if (items.length === 0) {
     return (
       <div className="text-center py-16">
-        <h2 className="text-2xl font-bold text-gray-900">Tu carrito está vacío</h2>
-        <p className="mt-2 text-gray-600">Agregá productos desde el catálogo</p>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">Tu carrito está vacío</h2>
+        <p className="mt-2 text-gray-600 dark:text-gray-400">Agregá productos desde el catálogo</p>
         <Link
           to="/catalog"
           className="mt-6 inline-block rounded-lg bg-blue-600 px-6 py-2 text-white hover:bg-blue-700"
@@ -53,12 +53,12 @@ export default function CartPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Tu Carrito</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Tu Carrito</h1>
 
       <div className="overflow-x-auto">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="border-b border-gray-200 text-left text-sm font-medium text-gray-500">
+            <tr className="border-b border-gray-200 dark:border-gray-700 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
               <th className="pb-3">Código</th>
               <th className="pb-3">Descripción</th>
               <th className="pb-3">Detalles</th>
@@ -70,9 +70,9 @@ export default function CartPage() {
           </thead>
           <tbody>
             {items.map((item) => (
-              <tr key={item.product.code} className="border-b border-gray-100">
-                <td className="py-4 text-sm text-gray-700">{item.product.code}</td>
-                <td className="py-4 text-sm text-gray-900">{item.product.description}</td>
+              <tr key={item.product.code} className="border-b border-gray-100 dark:border-gray-800">
+                <td className="py-4 text-sm text-gray-700 dark:text-gray-300">{item.product.code}</td>
+                <td className="py-4 text-sm text-gray-900 dark:text-gray-100">{item.product.description}</td>
                 <td className="py-4">
                   <input
                     type="text"
@@ -80,7 +80,7 @@ export default function CartPage() {
                     onChange={(e) => updateDetails(item.product.code, e.target.value)}
                     placeholder="Ej: para regalo, urgente..."
                     maxLength={500}
-                    className="w-full rounded border border-gray-300 px-2 py-1 text-sm text-gray-700 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none"
+                    className="w-full rounded border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-2 py-1 text-sm text-gray-700 dark:text-gray-300 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:outline-none"
                   />
                 </td>
                 <td className="py-4">
@@ -88,7 +88,7 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.product.code, item.quantity - 1)}
-                      className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100"
+                      className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
                       −
                     </button>
@@ -96,14 +96,14 @@ export default function CartPage() {
                     <button
                       type="button"
                       onClick={() => updateQuantity(item.product.code, item.quantity + 1)}
-                      className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100"
+                      className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
                     >
                       +
                     </button>
                   </div>
                 </td>
-                <td className="py-4 text-sm text-gray-700">{formatPrice(item.product.price)}</td>
-                <td className="py-4 text-sm text-gray-900 font-medium">
+                <td className="py-4 text-sm text-gray-700 dark:text-gray-300">{formatPrice(item.product.price)}</td>
+                <td className="py-4 text-sm text-gray-900 dark:text-gray-100 font-medium">
                   {formatPrice(item.product.price * item.quantity)}
                 </td>
                 <td className="py-4">
@@ -122,7 +122,7 @@ export default function CartPage() {
       </div>
 
       <div className="mt-6 flex flex-col items-end gap-4">
-        <div className="text-lg font-bold text-gray-900">
+        <div className="text-lg font-bold text-gray-900 dark:text-gray-100">
           Total ({totalItems} {totalItems === 1 ? "item" : "items"}):{" "}
           <span className="text-2xl">{formatPrice(totalPrice)}</span>
         </div>
@@ -130,7 +130,7 @@ export default function CartPage() {
         <div className="flex gap-4">
           <Link
             to="/catalog"
-            className="rounded-lg border border-gray-300 px-6 py-2 text-gray-700 hover:bg-gray-50"
+            className="rounded-lg border border-gray-300 dark:border-gray-600 px-6 py-2 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
           >
             Seguir comprando
           </Link>

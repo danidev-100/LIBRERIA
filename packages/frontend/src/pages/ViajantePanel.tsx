@@ -93,14 +93,14 @@ function ClientSelector({
 
   return (
     <div ref={wrapperRef} className="relative">
-      <label className="block text-sm font-medium text-gray-700 mb-1">
+      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
         Cliente
       </label>
       {selected ? (
-        <div className="flex items-center gap-3 rounded-lg border border-green-300 bg-green-50 px-4 py-2.5">
+        <div className="flex items-center gap-3 rounded-lg border border-green-300 dark:border-green-700 bg-green-50 dark:bg-green-900/30 px-4 py-2.5">
           <div>
-            <p className="text-sm font-medium text-gray-900">{selected.name}</p>
-            <p className="text-xs text-gray-500">{selected.email}</p>
+            <p className="text-sm font-medium text-gray-900 dark:text-gray-100">{selected.name}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{selected.email}</p>
           </div>
           <button
             type="button"
@@ -121,15 +121,15 @@ function ClientSelector({
             }}
             onFocus={() => setShowDropdown(true)}
             placeholder="Buscar cliente por nombre o email..."
-            className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200"
+                className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200 dark:focus:ring-green-800"
           />
           {showDropdown && (
             <div className="absolute z-20 mt-1 w-full rounded-lg border border-gray-200 bg-white shadow-lg max-h-60 overflow-y-auto">
               {isLoading && (
-                <p className="px-4 py-3 text-sm text-gray-500">Buscando...</p>
+                <p className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">Buscando...</p>
               )}
               {!isLoading && filteredClients.length === 0 && (
-                <p className="px-4 py-3 text-sm text-gray-500">
+                <p className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                   No se encontraron clientes
                 </p>
               )}
@@ -178,12 +178,12 @@ function ProductCard({
   }
 
   return (
-    <div className="flex flex-col rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md">
-      <h3 className="text-xs font-medium text-gray-500 uppercase">{product.code}</h3>
-      <p className="mt-1 text-sm text-gray-900 line-clamp-2 flex-1">
+    <div className="flex flex-col rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-3 shadow-sm transition-shadow hover:shadow-md dark:hover:shadow-gray-900/50">
+      <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">{product.code}</h3>
+      <p className="mt-1 text-sm text-gray-900 dark:text-gray-100 line-clamp-2 flex-1">
         {product.description}
       </p>
-      <p className="mt-1 text-base font-bold text-gray-900">
+      <p className="mt-1 text-base font-bold text-gray-900 dark:text-gray-100">
         {formatPrice(product.price)}
       </p>
 
@@ -191,7 +191,7 @@ function ProductCard({
         <button
           type="button"
           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm"
+          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
         >
           −
         </button>
@@ -199,7 +199,7 @@ function ProductCard({
         <button
           type="button"
           onClick={() => setQuantity((q) => q + 1)}
-          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100 text-sm"
+          className="flex h-7 w-7 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 text-sm"
         >
           +
         </button>
@@ -369,7 +369,7 @@ export default function ViajantePanelPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
         Panel de Viajante
       </h1>
 
@@ -381,7 +381,7 @@ export default function ViajantePanelPage() {
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             tab === "tomar-pedido"
               ? "bg-green-600 text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
           }`}
         >
           Tomar Pedido
@@ -392,7 +392,7 @@ export default function ViajantePanelPage() {
           className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
             tab === "mis-pedidos"
               ? "bg-green-600 text-white"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
           }`}
         >
           Mis Pedidos
@@ -407,7 +407,7 @@ export default function ViajantePanelPage() {
           {/* Left: Client selector + Catalog */}
           <div className="lg:col-span-3 space-y-6">
             {/* Client selector */}
-            <div className="rounded-lg border border-gray-200 bg-white p-4">
+            <div className="rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
               <ClientSelector
                 selected={selectedClient}
                 onSelect={setSelectedClient}
@@ -421,7 +421,7 @@ export default function ViajantePanelPage() {
                 value={productSearch}
                 onChange={(e) => setProductSearch(e.target.value)}
                 placeholder="Buscá por código o descripción..."
-                className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200"
+            className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-200 dark:focus:ring-green-800"
               />
             </div>
 
@@ -431,11 +431,11 @@ export default function ViajantePanelPage() {
                 {Array.from({ length: 6 }).map((_, i) => (
                   <div
                     key={i}
-                    className="animate-pulse rounded-lg border border-gray-200 bg-white p-3 h-36"
+                    className="animate-pulse rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-3 h-36"
                   >
-                    <div className="h-3 w-16 rounded bg-gray-200" />
-                    <div className="mt-2 h-4 w-full rounded bg-gray-200" />
-                    <div className="mt-1 h-6 w-20 rounded bg-gray-200" />
+                    <div className="h-3 w-16 rounded bg-gray-200 dark:bg-gray-700" />
+                    <div className="mt-2 h-4 w-full rounded bg-gray-200 dark:bg-gray-700" />
+                    <div className="mt-1 h-6 w-20 rounded bg-gray-200 dark:bg-gray-700" />
                   </div>
                 ))}
               </div>
@@ -460,7 +460,7 @@ export default function ViajantePanelPage() {
 
             {productQuery.data && productQuery.data.products.length === 0 && (
               <div className="text-center py-10">
-                <p className="text-gray-500">
+                <p className="text-gray-500 dark:text-gray-400">
                   {debouncedSearch
                     ? `No se encontraron productos para "${debouncedSearch}"`
                     : "No hay productos disponibles"}
@@ -486,11 +486,11 @@ export default function ViajantePanelPage() {
                     type="button"
                     onClick={() => setProductPage((p) => Math.max(1, p - 1))}
                     disabled={productPage <= 1}
-                    className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Anterior
                   </button>
-                  <span className="text-sm text-gray-600">
+                  <span className="text-sm text-gray-600 dark:text-gray-400">
                     Página {productQuery.data.page} de{" "}
                     {productQuery.data.totalPages}
                   </span>
@@ -498,7 +498,7 @@ export default function ViajantePanelPage() {
                     type="button"
                     onClick={() => setProductPage((p) => p + 1)}
                     disabled={productPage >= productQuery.data.totalPages}
-                    className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                    className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
                   >
                     Siguiente
                   </button>
@@ -509,28 +509,28 @@ export default function ViajantePanelPage() {
 
           {/* Right: Cart sidebar */}
           <div className="lg:col-span-1">
-            <div className="sticky top-24 rounded-lg border border-gray-200 bg-white p-4">
-              <h2 className="text-lg font-semibold text-gray-900 mb-3">
+            <div className="sticky top-24 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4">
+              <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">
                 Pedido actual
               </h2>
 
               {!selectedClient && (
-                <p className="text-sm text-gray-500">
+                <p className="text-sm text-gray-500 dark:text-gray-400">
                   Seleccioná un cliente para empezar
                 </p>
               )}
 
               {selectedClient && (
-                <div className="mb-3 text-sm text-gray-600">
-                  <span className="text-gray-400">Para: </span>
-                  <span className="font-medium text-gray-900">
+                <div className="mb-3 text-sm text-gray-600 dark:text-gray-400">
+                  <span className="text-gray-400 dark:text-gray-500">Para: </span>
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
                     {selectedClient.name}
                   </span>
                 </div>
               )}
 
               {cartItems.length === 0 && selectedClient && (
-                <p className="text-sm text-gray-400">
+                <p className="text-sm text-gray-400 dark:text-gray-500">
                   Agregá productos del catálogo
                 </p>
               )}
@@ -540,13 +540,13 @@ export default function ViajantePanelPage() {
                   {cartItems.map((item) => (
                     <div
                       key={item.product.code}
-                      className="flex items-start gap-2 text-sm border-b border-gray-100 pb-2"
+                      className="flex items-start gap-2 text-sm border-b border-gray-100 dark:border-gray-800 pb-2"
                     >
                       <div className="flex-1 min-w-0">
-                        <p className="text-gray-900 truncate font-medium">
+                        <p className="text-gray-900 dark:text-gray-100 truncate font-medium">
                           {item.product.code}
                         </p>
-                        <p className="text-xs text-gray-500 truncate">
+                        <p className="text-xs text-gray-500 dark:text-gray-400 truncate">
                           {item.product.description}
                         </p>
                         <p className="text-xs text-gray-500">
@@ -562,7 +562,7 @@ export default function ViajantePanelPage() {
                               item.quantity - 1,
                             )
                           }
-                          className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 text-gray-500 text-xs"
+                          className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 text-xs"
                         >
                           −
                         </button>
@@ -577,7 +577,7 @@ export default function ViajantePanelPage() {
                               item.quantity + 1,
                             )
                           }
-                          className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 text-gray-500 text-xs"
+                          className="flex h-5 w-5 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-500 dark:text-gray-400 text-xs"
                         >
                           +
                         </button>
@@ -599,9 +599,9 @@ export default function ViajantePanelPage() {
 
               {cartItems.length > 0 && (
                 <>
-                  <div className="mt-4 border-t border-gray-200 pt-3 space-y-1">
+                  <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-3 space-y-1">
                     <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Artículos</span>
+                      <span className="text-gray-500 dark:text-gray-400">Artículos</span>
                       <span className="font-medium">{cartCount}</span>
                     </div>
                     <div className="flex justify-between text-base font-bold">
@@ -653,7 +653,7 @@ export default function ViajantePanelPage() {
           {ordersQuery.isLoading && (
             <div className="animate-pulse space-y-3">
               {Array.from({ length: 5 }).map((_, i) => (
-                <div key={i} className="h-14 rounded-lg bg-gray-100" />
+                <div key={i} className="h-14 rounded-lg bg-gray-100 dark:bg-gray-800" />
               ))}
             </div>
           )}
@@ -677,7 +677,7 @@ export default function ViajantePanelPage() {
 
           {ordersQuery.data && ordersQuery.data.orders.length === 0 && (
             <div className="text-center py-16">
-              <p className="text-gray-500 text-lg">
+              <p className="text-gray-500 dark:text-gray-400 text-lg">
                 Todavía no tomaste ningún pedido
               </p>
             </div>
@@ -685,10 +685,10 @@ export default function ViajantePanelPage() {
 
           {ordersQuery.data && ordersQuery.data.orders.length > 0 && (
             <>
-              <div className="overflow-x-auto rounded-lg border border-gray-200">
+              <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
                 <table className="w-full border-collapse">
                   <thead>
-                    <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
+                    <tr className="bg-gray-50 dark:bg-gray-800 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
                       <th className="px-4 py-3">#</th>
                       <th className="px-4 py-3">Cliente</th>
                       <th className="px-4 py-3">Fecha</th>
@@ -701,21 +701,21 @@ export default function ViajantePanelPage() {
                     {ordersQuery.data.orders.map((order) => (
                       <tr
                         key={order.id}
-                        className="border-t border-gray-100 hover:bg-gray-50"
+                        className="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50"
                       >
-                        <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                        <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
                           #{order.id}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-700">
+                        <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                           <div>{order.user?.name ?? "—"}</div>
-                          <div className="text-xs text-gray-400">
+                          <div className="text-xs text-gray-400 dark:text-gray-500">
                             {order.user?.email ?? ""}
                           </div>
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-600">
+                        <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                           {formatDate(order.createdAt)}
                         </td>
-                        <td className="px-4 py-3 text-sm text-gray-900 font-medium">
+                        <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium">
                           {formatPrice(order.total)}
                         </td>
                         <td className="px-4 py-3">
@@ -732,14 +732,14 @@ export default function ViajantePanelPage() {
                             <button
                               type="button"
                               onClick={() => handleViewPdf(order.id)}
-                              className="rounded border border-gray-300 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50"
+                              className="rounded border border-gray-300 dark:border-gray-600 px-2 py-1 text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30"
                             >
                               Ver
                             </button>
                             <button
                               type="button"
                               onClick={() => handleDownloadPdf(order.id)}
-                              className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100"
+                              className="rounded border border-gray-300 dark:border-gray-600 px-2 py-1 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
                             >
                               PDF
                             </button>
@@ -757,11 +757,11 @@ export default function ViajantePanelPage() {
                   type="button"
                   onClick={() => setOrderPage((p) => Math.max(1, p - 1))}
                   disabled={orderPage <= 1}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Anterior
                 </button>
-                <span className="text-sm text-gray-600">
+                <span className="text-sm text-gray-600 dark:text-gray-400">
                   Página {ordersQuery.data.page} de{" "}
                   {ordersQuery.data.totalPages}
                 </span>
@@ -769,7 +769,7 @@ export default function ViajantePanelPage() {
                   type="button"
                   onClick={() => setOrderPage((p) => p + 1)}
                   disabled={orderPage >= ordersQuery.data.totalPages}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+                  className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
                 >
                   Siguiente
                 </button>

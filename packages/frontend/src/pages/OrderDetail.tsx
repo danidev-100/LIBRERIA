@@ -99,9 +99,9 @@ export default function OrderDetailPage() {
   if (isLoading) {
     return (
       <div className="animate-pulse space-y-4">
-        <div className="h-8 w-48 rounded bg-gray-200" />
-        <div className="h-4 w-32 rounded bg-gray-200" />
-        <div className="mt-6 h-48 rounded-lg bg-gray-100" />
+        <div className="h-8 w-48 rounded bg-gray-200 dark:bg-gray-700" />
+        <div className="h-4 w-32 rounded bg-gray-200 dark:bg-gray-700" />
+        <div className="mt-6 h-48 rounded-lg bg-gray-100 dark:bg-gray-800" />
       </div>
     );
   }
@@ -142,16 +142,16 @@ export default function OrderDetailPage() {
       <div className="mb-6">
         <Link
           to="/orders"
-          className="text-sm text-blue-600 hover:text-blue-800"
+          className="text-sm text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
         >
           ← Volver a mis pedidos
         </Link>
         <div className="mt-2 flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h1 className="text-2xl font-bold text-gray-900">
+            <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               Pedido #{order.id}
             </h1>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
               {formatDate(order.createdAt)}
             </p>
           </div>
@@ -166,7 +166,7 @@ export default function OrderDetailPage() {
             <button
               type="button"
               onClick={() => handleDownloadPdf(order.id)}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
             >
               Descargar PDF
             </button>
@@ -175,10 +175,10 @@ export default function OrderDetailPage() {
       </div>
 
       {/* Items table */}
-      <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
+            <tr className="bg-gray-50 dark:bg-gray-800 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
               <th className="px-4 py-3">Código</th>
               <th className="px-4 py-3">Descripción</th>
               <th className="px-4 py-3">Cantidad</th>
@@ -188,20 +188,20 @@ export default function OrderDetailPage() {
           </thead>
           <tbody>
             {order.items.map((item) => (
-              <tr key={item.id} className="border-t border-gray-100">
-                <td className="px-4 py-3 text-sm text-gray-700">
+              <tr key={item.id} className="border-t border-gray-100 dark:border-gray-800">
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                   {item.product.code}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-900">
+                <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">
                   {item.product.description}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                   {item.quantity}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-700">
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                   {formatPrice(item.unitPrice)}
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-900 font-medium text-right">
+                <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium text-right">
                   {formatPrice(item.unitPrice * item.quantity)}
                 </td>
               </tr>
@@ -212,7 +212,7 @@ export default function OrderDetailPage() {
 
       {/* Total */}
       <div className="mt-4 text-right">
-        <span className="text-lg font-bold text-gray-900">
+        <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
           Total: {formatPrice(order.total)}
         </span>
       </div>

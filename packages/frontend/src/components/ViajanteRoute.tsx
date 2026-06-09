@@ -8,7 +8,7 @@ export function ViajanteRoute({ children }: { children: ReactNode }) {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center py-20">
-        <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-600 border-t-transparent" />
+        <div className="h-10 w-10 animate-spin rounded-full border-4 border-green-600 dark:border-green-400 border-t-transparent" />
       </div>
     );
   }

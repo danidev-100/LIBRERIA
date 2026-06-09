@@ -143,7 +143,7 @@ export default function AdminDashboardPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
         Panel de Administración
       </h1>
 
@@ -160,7 +160,7 @@ export default function AdminDashboardPage() {
             className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
               statusFilter === tab.key
                 ? "bg-blue-600 text-white"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
             }`}
           >
             {tab.label}
@@ -172,7 +172,7 @@ export default function AdminDashboardPage() {
       {isLoading && (
         <div className="animate-pulse space-y-3">
           {Array.from({ length: 5 }).map((_, i) => (
-            <div key={i} className="h-14 rounded-lg bg-gray-100" />
+            <div key={i} className="h-14 rounded-lg bg-gray-100 dark:bg-gray-800" />
           ))}
         </div>
       )}
@@ -198,17 +198,17 @@ export default function AdminDashboardPage() {
       {/* Empty state */}
       {data && data.orders.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-gray-500 text-lg">No hay pedidos</p>
+          <p className="text-gray-500 dark:text-gray-400 text-lg">No hay pedidos</p>
         </div>
       )}
 
       {/* Orders table */}
       {data && data.orders.length > 0 && (
         <>
-          <div className="overflow-x-auto rounded-lg border border-gray-200">
+          <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
+                <tr className="bg-gray-50 dark:bg-gray-800 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
                   <th className="px-4 py-3">#</th>
                   <th className="px-4 py-3">Cliente</th>
                   <th className="px-4 py-3">Creado por</th>
@@ -220,34 +220,34 @@ export default function AdminDashboardPage() {
               </thead>
               <tbody>
                 {data.orders.map((order) => (
-                  <tr key={order.id} className="border-t border-gray-100 hover:bg-gray-50">
-                    <td className="px-4 py-3 text-sm font-medium text-gray-900">
+                  <tr key={order.id} className="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                    <td className="px-4 py-3 text-sm font-medium text-gray-900 dark:text-gray-100">
                       #{order.id}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-700">
+                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">
                       <div>{order.user?.name ?? "—"}</div>
-                      <div className="text-xs text-gray-400">
+                      <div className="text-xs text-gray-400 dark:text-gray-500">
                         {order.user?.email ?? ""}
                       </div>
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">
+                    <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                       {order.createdBy ? (
                         <div>
-                          <span className="text-xs font-medium text-green-700">
+                          <span className="text-xs font-medium text-green-700 dark:text-green-400">
                             {order.createdBy.name}
                           </span>
-                          <div className="text-xs text-gray-400">
+                          <div className="text-xs text-gray-400 dark:text-gray-500">
                             {order.createdBy.email}
                           </div>
                         </div>
                       ) : (
-                        <span className="text-xs text-gray-400">Cliente</span>
+                        <span className="text-xs text-gray-400 dark:text-gray-500">Cliente</span>
                       )}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-600">
+                    <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                       {formatDate(order.createdAt)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-900 font-medium">
+                    <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium">
                       {formatPrice(order.total)}
                     </td>
                     <td className="px-4 py-3">
@@ -265,7 +265,7 @@ export default function AdminDashboardPage() {
                           type="button"
                           onClick={() => handleViewPdf(order.id)}
                           title="Ver PDF"
-                          className="rounded border border-gray-300 px-2 py-1 text-xs text-blue-600 hover:bg-blue-50 transition-colors"
+                          className="rounded border border-gray-300 dark:border-gray-600 px-2 py-1 text-xs text-blue-600 dark:text-blue-400 hover:bg-blue-50 dark:hover:bg-blue-900/30 transition-colors"
                         >
                           Ver
                         </button>
@@ -273,7 +273,7 @@ export default function AdminDashboardPage() {
                           type="button"
                           onClick={() => handleDownloadPdf(order.id)}
                           title="Descargar PDF"
-                          className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors"
+                          className="rounded border border-gray-300 dark:border-gray-600 px-2 py-1 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         >
                           PDF
                         </button>
@@ -289,7 +289,7 @@ export default function AdminDashboardPage() {
                               }
                             }}
                             disabled={statusMutation.isPending}
-                            className="rounded border border-gray-300 px-2 py-1 text-xs text-gray-700 focus:border-blue-500 focus:outline-none"
+                            className="rounded border border-gray-300 dark:border-gray-600 px-2 py-1 text-xs text-gray-700 dark:text-gray-300 focus:border-blue-500 focus:outline-none bg-white dark:bg-gray-800"
                           >
                             <option value="" disabled>
                               Cambiar a...
@@ -301,7 +301,7 @@ export default function AdminDashboardPage() {
                             ))}
                           </select>
                         ) : (
-                          <span className="text-xs text-gray-400">—</span>
+                          <span className="text-xs text-gray-400 dark:text-gray-500">—</span>
                         )}
                       </div>
                     </td>
@@ -326,18 +326,18 @@ export default function AdminDashboardPage() {
               type="button"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Anterior
             </button>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
               Página {data.page} de {data.totalPages}
             </span>
             <button
               type="button"
               onClick={() => setPage((p) => p + 1)}
               disabled={page >= data.totalPages}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Siguiente
             </button>

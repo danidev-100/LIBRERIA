@@ -65,15 +65,15 @@ function ConfirmDialog({
 }) {
   return (
     <ModalOverlay onClose={onCancel}>
-      <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
-        <h2 className="text-lg font-semibold text-gray-900 mb-2">{title}</h2>
-        <p className="text-sm text-gray-600 mb-6">{message}</p>
+      <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{title}</h2>
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-6">{message}</p>
         <div className="flex justify-end gap-3">
           <button
             type="button"
             onClick={onCancel}
             disabled={isLoading}
-            className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-40"
+            className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-40"
           >
             Cancelar
           </button>
@@ -294,7 +294,7 @@ export default function AdminProductsPage() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Productos</h1>
+      <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Productos</h1>
 
       {/* Toolbar */}
       <div className="mb-6 flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
@@ -308,7 +308,7 @@ export default function AdminProductsPage() {
               className={`rounded-lg px-4 py-2 text-sm font-medium transition-colors ${
                 isActiveFilter === tab.key
                   ? "bg-blue-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+                  : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700"
               }`}
             >
               {tab.label}
@@ -345,7 +345,7 @@ export default function AdminProductsPage() {
           value={searchInput}
           onChange={(e) => setSearchInput(e.target.value)}
           placeholder="Buscar por código o descripción..."
-          className="w-full sm:w-80 rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 placeholder-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+          className="w-full sm:w-80 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 placeholder-gray-400 dark:placeholder-gray-500 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
         />
       </div>
 
@@ -353,7 +353,7 @@ export default function AdminProductsPage() {
       {isLoading && (
         <div className="animate-pulse space-y-3">
           {Array.from({ length: 8 }).map((_, i) => (
-            <div key={i} className="h-12 rounded-lg bg-gray-100" />
+            <div key={i} className="h-12 rounded-lg bg-gray-100 dark:bg-gray-800" />
           ))}
         </div>
       )}
@@ -377,7 +377,7 @@ export default function AdminProductsPage() {
       {/* Empty state */}
       {data && data.products.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-gray-500 text-lg">No se encontraron productos</p>
+          <p className="text-gray-500 dark:text-gray-400 text-lg">No se encontraron productos</p>
         </div>
       )}
 
@@ -393,10 +393,10 @@ export default function AdminProductsPage() {
       {/* Products table */}
       {data && data.products.length > 0 && (
         <>
-          <div className="overflow-x-auto rounded-lg border border-gray-200">
+          <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
             <table className="w-full border-collapse">
               <thead>
-                <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
+                <tr className="bg-gray-50 dark:bg-gray-800 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
                   <th className="px-4 py-3">Código</th>
                   <th className="px-4 py-3">Descripción</th>
                   <th className="px-4 py-3">Precio</th>
@@ -409,18 +409,18 @@ export default function AdminProductsPage() {
                 {data.products.map((product) => (
                   <tr
                     key={product.code}
-                    className="border-t border-gray-100 hover:bg-gray-50"
+                    className="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50"
                   >
-                    <td className="px-4 py-3 text-sm font-mono text-gray-900">
+                    <td className="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100">
                       {product.code}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-700 max-w-xs truncate">
+                    <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300 max-w-xs truncate">
                       {product.description}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-900 font-medium">
+                    <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 font-medium">
                       {formatPrice(product.price)}
                     </td>
-                    <td className="px-4 py-3 text-sm text-gray-500">
+                    <td className="px-4 py-3 text-sm text-gray-500 dark:text-gray-400">
                       {/* Category field not in current Product type; show "—" */}
                       —
                     </td>
@@ -428,8 +428,8 @@ export default function AdminProductsPage() {
                       <span
                         className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
                           product.isActive
-                            ? "bg-green-100 text-green-800"
-                            : "bg-red-100 text-red-800"
+                            ? "bg-green-100 dark:bg-green-900/40 text-green-800 dark:text-green-300"
+                            : "bg-red-100 dark:bg-red-900/40 text-red-800 dark:text-red-300"
                         }`}
                       >
                         {product.isActive ? "Activo" : "Inactivo"}
@@ -440,7 +440,7 @@ export default function AdminProductsPage() {
                         <button
                           type="button"
                           onClick={() => openEditModal(product)}
-                          className="rounded border border-gray-300 px-3 py-1 text-xs text-gray-700 hover:bg-gray-100 transition-colors"
+                          className="rounded border border-gray-300 dark:border-gray-600 px-3 py-1 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                         >
                           Editar
                         </button>
@@ -478,18 +478,18 @@ export default function AdminProductsPage() {
               type="button"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Anterior
             </button>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
               Página {data.page} de {data.totalPages}
             </span>
             <button
               type="button"
               onClick={() => setPage((p) => p + 1)}
               disabled={page >= data.totalPages}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Siguiente
             </button>
@@ -500,13 +500,13 @@ export default function AdminProductsPage() {
       {/* ===== Create Modal ===== */}
       {createOpen && (
         <ModalOverlay onClose={() => setCreateOpen(false)}>
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               Nuevo Producto
             </h2>
             <form onSubmit={handleCreateSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Código
                 </label>
                 <input
@@ -516,10 +516,10 @@ export default function AdminProductsPage() {
                     setCreateForm({ ...createForm, code: e.target.value.toUpperCase() })
                   }
                   maxLength={8}
-                  className={`w-full rounded-lg border px-4 py-2 text-sm ${
+                  className={`w-full rounded-lg border px-4 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
                     createErrors.code
                       ? "border-red-400 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      : "border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500"
                   } focus:outline-none focus:ring-1`}
                   placeholder="Ej: PROD0001"
                 />
@@ -528,7 +528,7 @@ export default function AdminProductsPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Descripción
                 </label>
                 <input
@@ -537,10 +537,10 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setCreateForm({ ...createForm, description: e.target.value })
                   }
-                  className={`w-full rounded-lg border px-4 py-2 text-sm ${
+                  className={`w-full rounded-lg border px-4 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
                     createErrors.description
                       ? "border-red-400 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      : "border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500"
                   } focus:outline-none focus:ring-1`}
                   placeholder="Descripción del producto"
                 />
@@ -551,7 +551,7 @@ export default function AdminProductsPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Precio
                 </label>
                 <input
@@ -565,10 +565,10 @@ export default function AdminProductsPage() {
                       price: e.target.value === "" ? 0 : Number(e.target.value),
                     })
                   }
-                  className={`w-full rounded-lg border px-4 py-2 text-sm ${
+                  className={`w-full rounded-lg border px-4 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
                     createErrors.price
                       ? "border-red-400 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      : "border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500"
                   } focus:outline-none focus:ring-1`}
                   placeholder="0.00"
                 />
@@ -577,9 +577,9 @@ export default function AdminProductsPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Categoría{" "}
-                  <span className="text-gray-400 font-normal">(opcional)</span>
+                  <span className="text-gray-400 dark:text-gray-500 font-normal">(opcional)</span>
                 </label>
                 <input
                   type="text"
@@ -587,7 +587,7 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setCreateForm({ ...createForm, category: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="Categoría"
                 />
               </div>
@@ -596,7 +596,7 @@ export default function AdminProductsPage() {
                   type="button"
                   onClick={() => setCreateOpen(false)}
                   disabled={createMutation.isPending}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-40"
+                  className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-40"
                 >
                   Cancelar
                 </button>
@@ -616,24 +616,24 @@ export default function AdminProductsPage() {
       {/* ===== Edit Modal ===== */}
       {editOpen && (
         <ModalOverlay onClose={() => setEditOpen(false)}>
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
             <h2 className="text-lg font-semibold text-gray-900 mb-4">
               Editar Producto
             </h2>
             <form onSubmit={handleEditSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Código
                 </label>
                 <input
                   type="text"
                   value={editForm.code}
                   disabled
-                  className="w-full rounded-lg border border-gray-200 bg-gray-50 px-4 py-2 text-sm text-gray-400"
+                  className="w-full rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 px-4 py-2 text-sm text-gray-400 dark:text-gray-500"
                 />
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Descripción
                 </label>
                 <input
@@ -642,10 +642,10 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setEditForm({ ...editForm, description: e.target.value })
                   }
-                  className={`w-full rounded-lg border px-4 py-2 text-sm ${
+                  className={`w-full rounded-lg border px-4 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
                     editErrors.description
                       ? "border-red-400 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      : "border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500"
                   } focus:outline-none focus:ring-1`}
                   placeholder="Descripción"
                 />
@@ -656,7 +656,7 @@ export default function AdminProductsPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Precio
                 </label>
                 <input
@@ -670,10 +670,10 @@ export default function AdminProductsPage() {
                       price: e.target.value === "" ? undefined : Number(e.target.value),
                     })
                   }
-                  className={`w-full rounded-lg border px-4 py-2 text-sm ${
+                  className={`w-full rounded-lg border px-4 py-2 text-sm bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 ${
                     editErrors.price
                       ? "border-red-400 focus:border-red-500 focus:ring-red-500"
-                      : "border-gray-300 focus:border-blue-500 focus:ring-blue-500"
+                      : "border-gray-300 dark:border-gray-600 focus:border-blue-500 focus:ring-blue-500"
                   } focus:outline-none focus:ring-1`}
                   placeholder="Sin cambios"
                 />
@@ -682,9 +682,9 @@ export default function AdminProductsPage() {
                 )}
               </div>
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                   Categoría{" "}
-                  <span className="text-gray-400 font-normal">(opcional)</span>
+                  <span className="text-gray-400 dark:text-gray-500 font-normal">(opcional)</span>
                 </label>
                 <input
                   type="text"
@@ -692,7 +692,7 @@ export default function AdminProductsPage() {
                   onChange={(e) =>
                     setEditForm({ ...editForm, category: e.target.value })
                   }
-                  className="w-full rounded-lg border border-gray-300 px-4 py-2 text-sm focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2 text-sm text-gray-900 dark:text-gray-100 placeholder:text-gray-400 focus:border-blue-500 focus:outline-none focus:ring-1 focus:ring-blue-500"
                   placeholder="Sin cambios"
                 />
               </div>
@@ -701,7 +701,7 @@ export default function AdminProductsPage() {
                   type="button"
                   onClick={() => setEditOpen(false)}
                   disabled={updateMutation.isPending}
-                  className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-40"
+                  className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-40"
                 >
                   Cancelar
                 </button>
@@ -734,13 +734,13 @@ export default function AdminProductsPage() {
       {/* ===== Upload Confirmation ===== */}
       {uploadOpen && uploadFile && (
         <ModalOverlay onClose={() => setUploadOpen(false)}>
-          <div className="bg-white rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
+          <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl w-full max-w-md p-6 mx-4">
             {uploadMutation.isSuccess ? (
               <>
-                <h2 className="text-lg font-semibold text-gray-900 mb-4">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">
                   Resultado de la carga
                 </h2>
-                <div className="space-y-2 text-sm text-gray-700 mb-6">
+                <div className="space-y-2 text-sm text-gray-700 dark:text-gray-300 mb-6">
                   <p>
                     <span className="font-medium">Insertados:</span>{" "}
                     {uploadMutation.data.inserted}
@@ -782,10 +782,10 @@ export default function AdminProductsPage() {
               </>
             ) : (
               <>
-                <h2 className="text-lg font-semibold text-gray-900 mb-2">
+                <h2 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
                   Confirmar carga
                 </h2>
-                <p className="text-sm text-gray-600 mb-4">
+                <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
                   Se va a procesar el archivo{" "}
                   <span className="font-medium">{uploadFile.name}</span>. Los
                   productos existentes se actualizarán y los nuevos se
@@ -807,7 +807,7 @@ export default function AdminProductsPage() {
                       uploadMutation.reset();
                     }}
                     disabled={uploadMutation.isPending}
-                    className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:opacity-40"
+                    className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:opacity-40"
                   >
                     Cancelar
                   </button>

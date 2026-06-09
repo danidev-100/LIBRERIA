@@ -29,14 +29,14 @@ function ProductCard({
   }
 
   return (
-    <div className="flex flex-col rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
-      <h3 className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+    <div className="flex flex-col rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4 shadow-sm transition-shadow hover:shadow-md dark:hover:shadow-gray-900/50">
+      <h3 className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide">
         {product.code}
       </h3>
-      <p className="mt-1 text-sm text-gray-900 line-clamp-2 flex-1">
+      <p className="mt-1 text-sm text-gray-900 dark:text-gray-100 line-clamp-2 flex-1">
         {product.description}
       </p>
-      <p className="mt-2 text-lg font-bold text-gray-900">
+      <p className="mt-2 text-lg font-bold text-gray-900 dark:text-gray-100">
         {formatPrice(product.price)}
       </p>
 
@@ -44,7 +44,7 @@ function ProductCard({
         <button
           type="button"
           onClick={() => setQuantity((q) => Math.max(1, q - 1))}
-          className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100"
+          className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
         >
           −
         </button>
@@ -52,7 +52,7 @@ function ProductCard({
         <button
           type="button"
           onClick={() => setQuantity((q) => q + 1)}
-          className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 text-gray-600 hover:bg-gray-100"
+          className="flex h-8 w-8 items-center justify-center rounded border border-gray-300 dark:border-gray-600 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800"
         >
           +
         </button>
@@ -79,12 +79,12 @@ function ProductGridSkeleton() {
       {Array.from({ length: 8 }).map((_, i) => (
         <div
           key={i}
-          className="animate-pulse rounded-lg border border-gray-200 bg-white p-4"
+          className="animate-pulse rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-900 p-4"
         >
-          <div className="h-3 w-16 rounded bg-gray-200" />
-          <div className="mt-2 h-4 w-full rounded bg-gray-200" />
-          <div className="mt-1 h-4 w-3/4 rounded bg-gray-200" />
-          <div className="mt-3 h-6 w-24 rounded bg-gray-200" />
+          <div className="h-3 w-16 rounded bg-gray-200 dark:bg-gray-700" />
+          <div className="mt-2 h-4 w-full rounded bg-gray-200 dark:bg-gray-700" />
+          <div className="mt-1 h-4 w-3/4 rounded bg-gray-200 dark:bg-gray-700" />
+          <div className="mt-3 h-6 w-24 rounded bg-gray-200 dark:bg-gray-700" />
           <div className="mt-4 flex gap-2">
             <div className="h-8 w-8 rounded bg-gray-200" />
             <div className="h-8 w-8 rounded bg-gray-200" />
@@ -138,7 +138,7 @@ export default function CatalogPage() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           placeholder="Buscá por código o descripción..."
-          className="w-full rounded-lg border border-gray-300 px-4 py-2.5 text-gray-900 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200"
+          className="w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 px-4 py-2.5 text-gray-900 dark:text-gray-100 placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-200 dark:focus:ring-blue-800"
         />
       </div>
 
@@ -164,7 +164,7 @@ export default function CatalogPage() {
       {/* Empty results */}
       {data && data.products.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-gray-500 text-lg">
+          <p className="text-gray-500 dark:text-gray-400 text-lg">
             {debouncedSearch
               ? `No se encontraron productos para "${debouncedSearch}"`
               : "No hay productos disponibles"}
@@ -191,18 +191,18 @@ export default function CatalogPage() {
               type="button"
               onClick={() => setPage((p) => Math.max(1, p - 1))}
               disabled={page <= 1}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Anterior
             </button>
-            <span className="text-sm text-gray-600">
+            <span className="text-sm text-gray-600 dark:text-gray-400">
               Página {data.page} de {data.totalPages}
             </span>
             <button
               type="button"
               onClick={() => setPage((p) => p + 1)}
               disabled={page >= data.totalPages}
-              className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
             >
               Siguiente
             </button>

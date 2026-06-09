@@ -16,7 +16,7 @@ function UsersTableSkeleton() {
   return (
     <div className="animate-pulse space-y-3">
       {Array.from({ length: 5 }).map((_, i) => (
-        <div key={i} className="h-12 rounded-lg bg-gray-100" />
+        <div key={i} className="h-12 rounded-lg bg-gray-100 dark:bg-gray-800" />
       ))}
     </div>
   );
@@ -33,7 +33,7 @@ export default function AdminUsersPage() {
   if (isLoading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-6">Usuarios</h1>
+        <h1 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Usuarios</h1>
         <UsersTableSkeleton />
       </div>
     );
@@ -59,7 +59,7 @@ export default function AdminUsersPage() {
   if (!data || data.users.length === 0) {
     return (
       <div className="text-center py-16">
-        <p className="text-gray-500 text-lg">No hay usuarios registrados</p>
+        <p className="text-gray-500 dark:text-gray-400 text-lg">No hay usuarios registrados</p>
       </div>
     );
   }
@@ -68,10 +68,10 @@ export default function AdminUsersPage() {
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-6">Usuarios</h1>
 
-      <div className="overflow-x-auto rounded-lg border border-gray-200">
+      <div className="overflow-x-auto rounded-lg border border-gray-200 dark:border-gray-700">
         <table className="w-full border-collapse">
           <thead>
-            <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
+            <tr className="bg-gray-50 dark:bg-gray-800 text-left text-sm font-medium text-gray-500 dark:text-gray-400">
               <th className="px-4 py-3">#</th>
               <th className="px-4 py-3">Nombre</th>
               <th className="px-4 py-3">Email</th>
@@ -82,23 +82,23 @@ export default function AdminUsersPage() {
           </thead>
           <tbody>
             {data.users.map((user) => (
-              <tr key={user.id} className="border-t border-gray-100 hover:bg-gray-50">
-                <td className="px-4 py-3 text-sm text-gray-700">{user.id}</td>
-                <td className="px-4 py-3 text-sm text-gray-900">{user.name}</td>
-                <td className="px-4 py-3 text-sm text-gray-600">{user.email}</td>
-                <td className="px-4 py-3 text-sm text-gray-600">{user.phone || "—"}</td>
+              <tr key={user.id} className="border-t border-gray-100 dark:border-gray-800 hover:bg-gray-50 dark:hover:bg-gray-800/50">
+                <td className="px-4 py-3 text-sm text-gray-700 dark:text-gray-300">{user.id}</td>
+                <td className="px-4 py-3 text-sm text-gray-900 dark:text-gray-100">{user.name}</td>
+                <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{user.email}</td>
+                <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">{user.phone || "—"}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${
                       user.role === "ADMIN"
-                        ? "bg-purple-100 text-purple-800"
-                        : "bg-gray-100 text-gray-700"
+                        ? "bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300"
+                        : "bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300"
                     }`}
                   >
                     {user.role === "ADMIN" ? "Admin" : "Cliente"}
                   </span>
                 </td>
-                <td className="px-4 py-3 text-sm text-gray-600">
+                <td className="px-4 py-3 text-sm text-gray-600 dark:text-gray-400">
                   {user.createdAt ? formatDate(user.createdAt) : "—"}
                 </td>
               </tr>
@@ -113,18 +113,18 @@ export default function AdminUsersPage() {
           type="button"
           onClick={() => setPage((p) => Math.max(1, p - 1))}
           disabled={page <= 1}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Anterior
         </button>
-        <span className="text-sm text-gray-600">
+        <span className="text-sm text-gray-600 dark:text-gray-400">
           Página {data.page} de {data.totalPages}
         </span>
         <button
           type="button"
           onClick={() => setPage((p) => p + 1)}
           disabled={page >= data.totalPages}
-          className="rounded-lg border border-gray-300 px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-40"
+          className="rounded-lg border border-gray-300 dark:border-gray-600 px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 disabled:cursor-not-allowed disabled:opacity-40"
         >
           Siguiente
         </button>
