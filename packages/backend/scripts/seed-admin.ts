@@ -8,14 +8,19 @@ dotenv.config();
 const adapter = new PrismaPg(process.env.DATABASE_URL!);
 const prisma = new PrismaClient({ adapter });
 
-async function main() {
-  const email = process.env.ADMIN_EMAIL;
-  const password = process.env.ADMIN_PASSWORD;
-  const name = process.env.ADMIN_NAME;
+async function seedUser(
+  role: "ADMIN" | "VIAJANTE",
+  emailEnv: string,
+  passwordEnv: string,
+  nameEnv: string,
+) {
+  const email = process.env[emailEnv];
+  const password = process.env[passwordEnv];
+  const name = process.env[nameEnv];
 
   if (!email || !password || !name) {
-    console.error("❌ ADMIN_EMAIL, ADMIN_PASSWORD, and ADMIN_NAME must be set in .env");
-    process.exit(1);
+    console.log(`⚠️  ${emailEnv} not set — skipping ${role} seed`);
+    return;
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
@@ -25,17 +30,22 @@ async function main() {
     update: {
       name,
       password: hashedPassword,
-      role: "ADMIN",
+      role,
     },
     create: {
       email,
       name,
       password: hashedPassword,
-      role: "ADMIN",
+      role,
     },
   });
 
-  console.log(`✅ Admin user ${user.email} (id: ${user.id}) — ${user.role}`);
+  console.log(`✅ ${role} user ${user.email} (id: ${user.id}) — ${user.role}`);
+}
+
+async function main() {
+  await seedUser("ADMIN", "ADMIN_EMAIL", "ADMIN_PASSWORD", "ADMIN_NAME");
+  await seedUser("VIAJANTE", "VIAJANTE_EMAIL", "VIAJANTE_PASSWORD", "VIAJANTE_NAME");
 }
 
 main()

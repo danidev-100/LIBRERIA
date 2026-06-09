@@ -97,6 +97,7 @@ router.get(
         orderBy: { createdAt: "desc" },
         include: {
           user: { select: { id: true, name: true, email: true } },
+          createdBy: { select: { id: true, name: true, email: true } },
           items: { include: { product: true } },
         },
       }),
@@ -153,6 +154,7 @@ router.patch(
       data: { status: newStatus as any },
       include: {
         user: { select: { id: true, name: true, email: true } },
+        createdBy: { select: { id: true, name: true, email: true } },
         items: { include: { product: true } },
       },
     });
@@ -181,7 +183,7 @@ router.get(
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
-        select: { id: true, name: true, email: true, role: true, createdAt: true },
+        select: { id: true, name: true, email: true, phone: true, role: true, createdAt: true },
       }),
       prisma.user.count(),
     ]);

@@ -9,8 +9,9 @@ export function register(
   name: string,
   email: string,
   password: string,
+  phone?: string,
 ): Promise<UserResponse> {
-  return client.post<UserResponse>("/auth/register", { name, email, password });
+  return client.post<UserResponse>("/auth/register", { name, email, password, phone });
 }
 
 export function getMe(): Promise<UserResponse> {

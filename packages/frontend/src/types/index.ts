@@ -12,7 +12,8 @@ export interface User {
   id: number;
   name: string;
   email: string;
-  role: "ADMIN" | "CLIENT";
+  phone?: string | null;
+  role: "ADMIN" | "VIAJANTE" | "CLIENT";
   createdAt?: string;
 }
 
@@ -29,6 +30,8 @@ export interface OrderItem {
 export interface Order {
   id: number;
   userId: number;
+  createdById?: number | null;
+  createdBy?: User | null;
   status: OrderStatus;
   total: number;
   createdAt: string;

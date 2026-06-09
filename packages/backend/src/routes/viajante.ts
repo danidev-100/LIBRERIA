@@ -3,10 +3,13 @@ import { z } from "zod";
 import { AppError } from "../middleware/error.js";
 import { asyncWrap } from "../middleware/async-wrap.js";
 import { requireAuth } from "../middleware/auth.js";
+import { requireViajante } from "../middleware/viajante.js";
 import prisma from "../lib/prisma.js";
-import { generateOrderInvoice } from "../lib/pdf-generator.js";
 
 const router = Router();
+
+// All viajante routes require auth + viajante role
+router.use(requireAuth, requireViajante);
 
 // --- Schemas ---
 
@@ -17,6 +20,7 @@ const itemSchema = z.object({
 });
 
 const createOrderSchema = z.object({
+  clientId: z.number().int().positive("clientId is required"),
   items: z.array(itemSchema).min(1, "At least one item is required"),
 });
 
@@ -25,11 +29,72 @@ const paginationSchema = z.object({
   limit: z.coerce.number().int().positive().max(100).default(20),
 });
 
-// --- POST /api/orders ---
+// --- Helpers ---
+
+function mapOrderWithItems(order: {
+  id: number;
+  userId: number;
+  createdById: number | null;
+  status: string;
+  total: { toNumber?: () => number };
+  createdAt: Date;
+  user: { id: number; name: string; email: string } | null;
+  items: Array<{
+    id: number;
+    orderId: number;
+    productCode: string;
+    quantity: number;
+    unitPrice: { toNumber?: () => number };
+    details: string | null;
+    product: { code: string; description: string; price: { toNumber?: () => number } };
+  }>;
+}) {
+  return {
+    ...order,
+    total: Number(order.total),
+    items: order.items.map((item) => ({
+      ...item,
+      unitPrice: Number(item.unitPrice),
+      details: item.details,
+      product: { ...item.product, price: Number(item.product.price) },
+    })),
+  };
+}
+
+// --- GET /api/viajante/clients ---
+// List all CLIENT users so the viajante can pick one
+
+router.get(
+  "/clients",
+  asyncWrap(async (req, res) => {
+    const parsed = paginationSchema.safeParse(req.query);
+    if (!parsed.success) {
+      throw new AppError(400, parsed.error.issues.map((i) => i.message).join("; "));
+    }
+
+    const { page, limit } = parsed.data;
+    const skip = (page - 1) * limit;
+
+    const [clients, total] = await Promise.all([
+      prisma.user.findMany({
+        where: { role: "CLIENT" },
+        skip,
+        take: limit,
+        orderBy: { name: "asc" },
+        select: { id: true, name: true, email: true, createdAt: true },
+      }),
+      prisma.user.count({ where: { role: "CLIENT" } }),
+    ]);
+
+    res.json({ clients, total, page, totalPages: Math.ceil(total / limit) });
+  }),
+);
+
+// --- POST /api/viajante/orders ---
+// Create an order on behalf of a client
 
 router.post(
-  "/",
-  requireAuth,
+  "/orders",
   asyncWrap(async (req, res) => {
     const parsed = createOrderSchema.safeParse(req.body);
     if (!parsed.success) {
@@ -38,6 +103,20 @@ router.post(
 
     const body = parsed.data;
     const codes = body.items.map((i) => i.productCode);
+
+    // Verify the client exists and is a CLIENT
+    const client = await prisma.user.findUnique({
+      where: { id: body.clientId },
+      select: { id: true, role: true },
+    });
+
+    if (!client) {
+      throw new AppError(404, "Client not found");
+    }
+
+    if (client.role !== "CLIENT") {
+      throw new AppError(400, "User is not a client");
+    }
 
     const order = await prisma.$transaction(async (tx) => {
       const products = await tx.product.findMany({
@@ -69,13 +148,15 @@ router.post(
 
       return tx.order.create({
         data: {
-          userId: req.user!.id,
+          userId: body.clientId,
+          createdById: req.user!.id,
           total,
           items: {
             create: orderItemsData,
           },
         },
         include: {
+          user: { select: { id: true, name: true, email: true } },
           items: {
             include: { product: true },
           },
@@ -89,11 +170,11 @@ router.post(
   }),
 );
 
-// --- GET /api/orders ---
+// --- GET /api/viajante/orders ---
+// List orders created by this viajante
 
 router.get(
-  "/",
-  requireAuth,
+  "/orders",
   asyncWrap(async (req, res) => {
     const parsed = paginationSchema.safeParse(req.query);
     if (!parsed.success) {
@@ -102,21 +183,22 @@ router.get(
 
     const { page, limit } = parsed.data;
     const skip = (page - 1) * limit;
-    const userId = req.user!.id;
+    const viajanteId = req.user!.id;
 
     const [orders, total] = await Promise.all([
       prisma.order.findMany({
-        where: { userId },
+        where: { createdById: viajanteId },
         skip,
         take: limit,
         orderBy: { createdAt: "desc" },
         include: {
+          user: { select: { id: true, name: true, email: true } },
           items: {
             include: { product: true },
           },
         },
       }),
-      prisma.order.count({ where: { userId } }),
+      prisma.order.count({ where: { createdById: viajanteId } }),
     ]);
 
     res.json({
@@ -127,115 +209,5 @@ router.get(
     });
   }),
 );
-
-// --- GET /api/orders/:id ---
-
-router.get(
-  "/:id",
-  requireAuth,
-  asyncWrap(async (req, res) => {
-    const id = Number(req.params.id);
-    if (isNaN(id)) throw new AppError(400, "Invalid order ID");
-
-    const order = await prisma.order.findUnique({
-      where: { id },
-      include: {
-        items: {
-          include: { product: true },
-        },
-      },
-    });
-
-    if (!order) {
-      throw new AppError(404, "Order not found");
-    }
-
-    // Ownership check: must be own order, created by this viajante, OR admin
-    if (
-      order.userId !== req.user!.id &&
-      order.createdById !== req.user!.id &&
-      req.user!.role !== "ADMIN"
-    ) {
-      throw new AppError(403, "You do not have access to this order");
-    }
-
-    res.json({ order: mapOrderWithItems(order) });
-  }),
-);
-
-// --- GET /api/orders/:id/pdf ---
-
-router.get(
-  "/:id/pdf",
-  requireAuth,
-  asyncWrap(async (req, res) => {
-    const id = Number(req.params.id);
-    if (isNaN(id)) throw new AppError(400, "Invalid order ID");
-
-    const order = await prisma.order.findUnique({
-      where: { id },
-      include: {
-        user: { select: { name: true, email: true } },
-        items: {
-          include: { product: true },
-        },
-      },
-    });
-
-    if (!order) {
-      throw new AppError(404, "Order not found");
-    }
-
-    // Ownership check: must be own order, created by this viajante, OR admin
-    if (
-      order.userId !== req.user!.id &&
-      order.createdById !== req.user!.id &&
-      req.user!.role !== "ADMIN"
-    ) {
-      throw new AppError(403, "You do not have access to this order");
-    }
-
-    const pdfBuffer = await generateOrderInvoice(order);
-
-    const disposition =
-      req.query.inline === "true" ? "inline" : "attachment";
-
-    res.set({
-      "Content-Type": "application/pdf",
-      "Content-Disposition": `${disposition}; filename="order-${order.id}.pdf"`,
-    });
-    res.send(pdfBuffer);
-  }),
-);
-
-// --- Helpers ---
-
-function mapOrderWithItems(order: {
-  id: number;
-  userId: number;
-  status: string;
-  total: { toNumber?: () => number };
-  createdAt: Date;
-  items: Array<{
-    id: number;
-    orderId: number;
-    productCode: string;
-    quantity: number;
-    unitPrice: { toNumber?: () => number };
-    details: string | null;
-    product: { code: string; description: string; price: { toNumber?: () => number } };
-  }>;
-}) {
-  return {
-    ...order,
-    total: Number(order.total),
-    items: order.items.map((item) => ({
-      ...item,
-      unitPrice: Number(item.unitPrice),
-      details: item.details,
-      product: { ...item.product, price: Number(item.product.price) },
-    })),
-  };
-}
 
 export default router;

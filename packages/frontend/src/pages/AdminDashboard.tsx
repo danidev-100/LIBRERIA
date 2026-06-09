@@ -211,6 +211,7 @@ export default function AdminDashboardPage() {
                 <tr className="bg-gray-50 text-left text-sm font-medium text-gray-500">
                   <th className="px-4 py-3">#</th>
                   <th className="px-4 py-3">Cliente</th>
+                  <th className="px-4 py-3">Creado por</th>
                   <th className="px-4 py-3">Fecha</th>
                   <th className="px-4 py-3">Total</th>
                   <th className="px-4 py-3">Estado</th>
@@ -228,6 +229,20 @@ export default function AdminDashboardPage() {
                       <div className="text-xs text-gray-400">
                         {order.user?.email ?? ""}
                       </div>
+                    </td>
+                    <td className="px-4 py-3 text-sm text-gray-600">
+                      {order.createdBy ? (
+                        <div>
+                          <span className="text-xs font-medium text-green-700">
+                            {order.createdBy.name}
+                          </span>
+                          <div className="text-xs text-gray-400">
+                            {order.createdBy.email}
+                          </div>
+                        </div>
+                      ) : (
+                        <span className="text-xs text-gray-400">Cliente</span>
+                      )}
                     </td>
                     <td className="px-4 py-3 text-sm text-gray-600">
                       {formatDate(order.createdAt)}

@@ -5,6 +5,7 @@ import { CartProvider } from "./context/CartContext.js";
 import Layout from "./components/Layout.js";
 import { ProtectedRoute } from "./components/ProtectedRoute.js";
 import { AdminRoute } from "./components/AdminRoute.js";
+import { ViajanteRoute } from "./components/ViajanteRoute.js";
 import LoginPage from "./pages/Login.js";
 import RegisterPage from "./pages/Register.js";
 import CatalogPage from "./pages/Catalog.js";
@@ -14,6 +15,7 @@ import OrderDetailPage from "./pages/OrderDetail.js";
 import AdminDashboardPage from "./pages/AdminDashboard.js";
 import AdminUsersPage from "./pages/AdminUsers.js";
 import AdminProductsPage from "./pages/AdminProducts.js";
+import ViajantePanelPage from "./pages/ViajantePanel.js";
 import NotFoundPage from "./pages/NotFound.js";
 
 const queryClient = new QueryClient({
@@ -84,6 +86,14 @@ export function App() {
                     <AdminRoute>
                       <AdminProductsPage />
                     </AdminRoute>
+                  }
+                />
+                <Route
+                  path="/viajante"
+                  element={
+                    <ViajanteRoute>
+                      <ViajantePanelPage />
+                    </ViajanteRoute>
                   }
                 />
                 <Route path="*" element={<NotFoundPage />} />

@@ -16,8 +16,9 @@ interface AuthContextType {
   isLoading: boolean;
   isAuthenticated: boolean;
   isAdmin: boolean;
+  isViajante: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (name: string, email: string, password: string) => Promise<void>;
+  register: (name: string, email: string, password: string, phone?: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -81,8 +82,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   );
 
   const register = useCallback(
-    async (name: string, email: string, password: string) => {
-      await authApi.register(name, email, password);
+    async (name: string, email: string, password: string, phone?: string) => {
+      await authApi.register(name, email, password, phone);
       // Does NOT set user or token — redirect to login
     },
     [],
@@ -101,6 +102,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     isLoading,
     isAuthenticated: user !== null,
     isAdmin: user?.role === "ADMIN",
+    isViajante: user?.role === "VIAJANTE",
     login,
     register,
     logout,

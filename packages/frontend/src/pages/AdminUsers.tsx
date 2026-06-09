@@ -75,6 +75,7 @@ export default function AdminUsersPage() {
               <th className="px-4 py-3">#</th>
               <th className="px-4 py-3">Nombre</th>
               <th className="px-4 py-3">Email</th>
+              <th className="px-4 py-3">Celular</th>
               <th className="px-4 py-3">Rol</th>
               <th className="px-4 py-3">Registrado</th>
             </tr>
@@ -85,6 +86,7 @@ export default function AdminUsersPage() {
                 <td className="px-4 py-3 text-sm text-gray-700">{user.id}</td>
                 <td className="px-4 py-3 text-sm text-gray-900">{user.name}</td>
                 <td className="px-4 py-3 text-sm text-gray-600">{user.email}</td>
+                <td className="px-4 py-3 text-sm text-gray-600">{user.phone || "—"}</td>
                 <td className="px-4 py-3">
                   <span
                     className={`inline-block rounded-full px-3 py-1 text-xs font-medium ${

@@ -8,6 +8,7 @@ datasource db {
 
 enum Role {
   CLIENT
+  VIAJANTE
   ADMIN
 }
 
@@ -31,23 +32,27 @@ model Product {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  email     String    @unique
-  name      String
-  password  String
-  role      Role      @default(CLIENT)
-  createdAt DateTime  @default(now())
-  orders    Order[]
+  id           Int       @id @default(autoincrement())
+  email        String    @unique
+  name         String
+  password     String
+  phone        String?
+  role         Role      @default(CLIENT)
+  createdAt    DateTime  @default(now())
+  orders       Order[]
+  createdOrders Order[]   @relation("CreatedOrders")
 }
 
 model Order {
-  id        Int         @id @default(autoincrement())
-  userId    Int
-  user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
-  status    OrderStatus @default(PENDING)
-  total     Decimal     @db.Decimal(12, 2)
-  createdAt DateTime    @default(now())
-  items     OrderItem[]
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdById Int?
+  createdBy   User?       @relation("CreatedOrders", fields: [createdById], references: [id], onDelete: SetNull)
+  status      OrderStatus @default(PENDING)
+  total       Decimal     @db.Decimal(12, 2)
+  createdAt   DateTime    @default(now())
+  items       OrderItem[]
 }
 
 model OrderItem {

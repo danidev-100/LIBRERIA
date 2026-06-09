@@ -6,6 +6,7 @@ import authRouter from "./routes/auth.js";
 import productRouter from "./routes/products.js";
 import orderRouter from "./routes/orders.js";
 import adminRouter from "./routes/admin.js";
+import viajanteRouter from "./routes/viajante.js";
 import { globalErrorHandler } from "./middleware/error.js";
 
 const app: Express = express();
@@ -25,6 +26,7 @@ app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
 app.use("/api/orders", orderRouter);
 app.use("/api/admin", adminRouter);
+app.use("/api/viajante", viajanteRouter);
 
 // 404 catch-all for unmatched routes
 app.use((_req, res) => {

@@ -4,7 +4,7 @@ import { useAuth } from "../context/AuthContext.js";
 import { useCart } from "../context/CartContext.js";
 
 export default function Layout() {
-  const { isAuthenticated, isAdmin, user, logout } = useAuth();
+  const { isAuthenticated, isAdmin, isViajante, user, logout } = useAuth();
   const { totalItems } = useCart();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -65,6 +65,14 @@ export default function Layout() {
                   >
                     Mis Pedidos
                   </Link>
+                  {isViajante && (
+                    <Link
+                      to="/viajante"
+                      className="text-sm font-medium text-green-600 hover:text-green-800 transition-colors"
+                    >
+                      Viajante
+                    </Link>
+                  )}
                   {isAdmin && (
                     <>
                       <Link
@@ -173,6 +181,15 @@ export default function Layout() {
                   >
                     Mis Pedidos
                   </Link>
+                  {isViajante && (
+                    <Link
+                      to="/viajante"
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="block rounded-lg px-3 py-2 text-sm font-medium text-green-600 hover:bg-gray-100"
+                    >
+                      Viajante
+                    </Link>
+                  )}
                   {isAdmin && (
                     <>
                       <Link

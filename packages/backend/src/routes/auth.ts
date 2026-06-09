@@ -27,6 +27,7 @@ const registerSchema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email"),
   password: z.string().min(6, "Password must be at least 6 characters"),
+  phone: z.string().optional(),
 });
 
 const loginSchema = z.object({
@@ -57,11 +58,13 @@ router.post(
         name: body.name,
         email: body.email,
         password: hashedPassword,
+        phone: body.phone,
       },
       select: {
         id: true,
         name: true,
         email: true,
+        phone: true,
         role: true,
       },
     });
@@ -105,6 +108,7 @@ router.post(
         id: user.id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
         role: user.role,
       },
     });
@@ -123,6 +127,7 @@ router.get(
         id: true,
         name: true,
         email: true,
+        phone: true,
         role: true,
         createdAt: true,
       },
